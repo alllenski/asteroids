@@ -1,0 +1,51 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://Scenes/Player/Player.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Scripts/Director.gd" type="Script" id=2]
+[ext_resource path="res://Scripts/Background.gd" type="Script" id=3]
+[ext_resource path="res://Shaders/crt_material.tres" type="Material" id=4]
+[ext_resource path="res://Scenes/GUI/GUI.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Scripts/World.gd" type="Script" id=6]
+
+[node name="World" type="Node"]
+script = ExtResource( 6 )
+
+[node name="Director" type="Node2D" parent="."]
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Entities" type="Node2D" parent="Director"]
+__meta__ = {
+"_edit_group_": true,
+"_edit_lock_": true
+}
+
+[node name="Player" parent="Director/Entities" instance=ExtResource( 1 )]
+position = Vector2( 640, 360 )
+
+[node name="Background" type="CanvasLayer" parent="."]
+layer = -1
+
+[node name="Background" type="Node2D" parent="Background"]
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Interface" type="CanvasLayer" parent="."]
+
+[node name="GUI" parent="Interface" instance=ExtResource( 5 )]
+
+[node name="Shader" type="CanvasLayer" parent="."]
+
+[node name="CRT" type="ColorRect" parent="Shader"]
+material = ExtResource( 4 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_group_": true,
+"_edit_lock_": true,
+"_edit_use_anchors_": false
+}

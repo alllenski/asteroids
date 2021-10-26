@@ -1,0 +1,25 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Scenes/Particles/Particle.gd" type="Script" id=1]
+
+[sub_resource type="ParticlesMaterial" id=1]
+emission_shape = 2
+emission_box_extents = Vector3( 1, 1, 1 )
+flag_disable_z = true
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 5.0
+initial_velocity_random = 1.0
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+scale = 10.0
+
+[node name="HitParticle" type="Particles2D"]
+emitting = false
+amount = 1
+lifetime = 0.1
+one_shot = true
+process_material = SubResource( 1 )
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_lock_": true
+}

@@ -1,0 +1,63 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Scenes/Player/Player.gd" type="Script" id=1]
+[ext_resource path="res://Scenes/Vulcan/Vulcan.tscn" type="PackedScene" id=2]
+
+[sub_resource type="Shader" id=1]
+code = "shader_type canvas_item;
+
+uniform float scan_line_jitter : hint_range(0.0,0.075) = 0.015;
+uniform float horizontal_shake : hint_range(0.0,0.25) = 0.01;
+uniform float color_drift : hint_range(0.0,0.1) = 0.03; 
+
+float nrand(float x, float y) {
+	return fract(sin(dot(vec2(x,y),vec2(12.9898, 78.233))) * 43758.5433);
+}
+
+void fragment() {
+	float u = UV.x;
+	float v = UV.y;
+	
+	float jitter = nrand(v, TIME) * 2.0 - 1.0;
+	jitter *= step(0, abs(jitter)) * scan_line_jitter;
+	float jump = mix(v, fract(v), 0.0);
+	float shake = (nrand(TIME,2.0) - 0.5) * horizontal_shake;
+	float drift = sin(jump) * color_drift;
+	
+	vec4 src1 = texture(TEXTURE, fract(vec2(u+jitter+shake,jump)));
+	vec4 src2 = texture(TEXTURE, fract(vec2(u+jitter+shake+drift,jump)));
+	COLOR = vec4(src1.r,src2.g,src1.b,src1.a);	
+}"
+
+[sub_resource type="ShaderMaterial" id=2]
+shader = SubResource( 1 )
+shader_param/scan_line_jitter = 0.0
+shader_param/horizontal_shake = 0.0
+shader_param/color_drift = 0.0
+
+[node name="Player" type="RigidBody2D"]
+collision_mask = 4
+can_sleep = false
+linear_damp = 10.0
+angular_damp = 10.0
+script = ExtResource( 1 )
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+build_mode = 1
+polygon = PoolVector2Array( 20, 0, -20, 20, -10, 0, -20, -20, 20, 0 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Weapon" type="Node2D" parent="."]
+position = Vector2( 10, 0 )
+__meta__ = {
+"_edit_group_": true,
+"_edit_lock_": true
+}
+
+[node name="Vulcan" parent="Weapon" instance=ExtResource( 2 )]
+material = SubResource( 2 )
+
+[node name="Camera2D" type="Camera2D" parent="."]
+current = true

@@ -1,0 +1,23 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Scenes/Enemies/Observer/Observer.gd" type="Script" id=1]
+
+[sub_resource type="CircleShape2D" id=1]
+radius = 15.0
+
+[node name="Observer" type="KinematicBody2D"]
+collision_layer = 4
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource( 1 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="EyeShape" type="Polygon2D" parent="."]
+visible = false
+polygon = PoolVector2Array( -10, 0, -7.5, -1.5, -5, -3, -2.5, -4.5, 0, -5, 2.5, -4.5, 5, -3, 7.5, -1.5, 10, 0, 7.5, 1.5, 5, 3, 2.5, 4.5, 0, 5, -2.5, 4.5, -5, 3, -7.5, 1.5, -10, 0 )
